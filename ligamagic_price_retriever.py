@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 def get_card_id(card_name):
     ligamagic_url = 'https://www.ligamagic.com.br/?view=cards/card&card='
 
+    card_name = card_name.replace("'", "%27")
     card_name = card_name.replace(" ", "+")
     card_name = card_name.replace(",", "%2C")
     ligamagic_url = ligamagic_url + card_name
