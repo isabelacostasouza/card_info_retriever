@@ -8,3 +8,5 @@ Faça bom proveito e deixe seu feedback! :)
 
 
 PS.: Se você não tem conhecimento e/ou um ambiente virtual para rodar programas Python, basta fazer upload do programa e do arquivo .txt com as cartas desejadas no site 'repl.it/languages/python3' e clicar 'run', o código será executado e você terá seu arquivo com as informações das cartas da mesma forma
+
+* ENTRE NO ARQUIVO tutorial.pdf PARA APRENDER A USAR O PROGRAMA*
