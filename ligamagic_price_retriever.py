@@ -135,13 +135,11 @@ def main(wanted_store_url):
             file.write("Carta indisponivel!")
             if(cartas_checadas != quantidade_cartas):
                 file.write("\n\n----------------\n\n")
-        
         print(card_name)
 
     print("\nAs informacoes recuperadas da loja estao no arquivo card_prices.txt :)\n")
     file.close
-
-
+    
 #link da loja desejada, nesse exemplo, TCGeek
 wanted_store_url = "https://www.tcgeek.com.br"
 main(wanted_store_url)
