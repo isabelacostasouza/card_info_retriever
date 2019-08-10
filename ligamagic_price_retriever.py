@@ -11,13 +11,20 @@ def get_card_id(card_name):
     ligamagic_url = 'https://www.ligamagic.com.br/?view=cards/card&card='
 
     card_name = card_name.replace(" ", "+")
+    card_name = card_name.replace(",", "%2C")
     ligamagic_url = ligamagic_url + card_name
 
     #get the First URL's html
     page = requests.get(ligamagic_url)
     soup = BeautifulSoup(page.text, 'html.parser')
 
-    store_link = requests.get("https://www.ligamagic.com.br/" + str(soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace").find("a")["href"])).url
+    store_link = soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace")
+
+    if(store_link == None):
+        store_link = requests.get("https://www.ligamagic.com.br/" + str(soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace e-col8-com-extras").find("div").find("a")["href"])).url
+        
+    else:
+      store_link = requests.get("https://www.ligamagic.com.br/" + str(soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace").find("a")["href"])).url
 
     return store_link.split("card=")[1].split("&")[0]
 
@@ -49,10 +56,10 @@ def get_card_info(wanted_store_url, card_name):
                 if(table_cards[i].find_all("td")[4].find("font") == None):
                     valor = str(table_cards[i].find_all("td")[4].contents[0])
                     if(valor[0] != 'R'):
-                      if(valor[0] == '-'):
-                        valor = str(table_cards[i].find_all("td")[3].contents[0])
-                      else:
-                        valor = str(table_cards[i].find_all("td")[5].contents[0])
+                        if(valor[0] == '-'):
+                            valor = str(table_cards[i].find_all("td")[3].contents[0])
+                        else:
+                            valor = str(table_cards[i].find_all("td")[5].contents[0])
                 else:
                     valor = str(table_cards[i].find_all("td")[4].find("font").contents[0])
                     if(valor[0] != 'R'):
@@ -100,15 +107,17 @@ def main(wanted_store_url):
     cartas_checadas = 0
 
     file = open("card_prices","w+")
-    
+  
     wanted_store_url += "/?view=ecom/item&tcg=1&card="
+
+    print("Cartas conferidas:\n")
 
     for card_name in list_cards:
         
         informacoes_encontradas = get_card_info(wanted_store_url, card_name)
         if(informacoes_encontradas == '0'):
-            file.write("Card com nome incorreto: " + card_name + "\nO programa parou porque voce nao sabe escrever ou porque esta carta nao esta disponivel em nenhuma loja da liga\n")
-            print("\nCard com nome incorreto: " + card_name + "\nO programa parou porque voce nao sabe escrever ou porque esta carta nao esta disponivel em nenhuma loja da liga\n")
+            file.write("Card com nome incorreto: " + card_name + "\n\nO programa parou por uma das seguintes razoes:\n1. Voce nao soube escrever o nome da carta\n2. Esta carta nao esta disponivel em nenhuma loja da liga\n3. Eu programei algo errado, reporte o bug :)\n\nRetire ou altere o nome da carta, desculpe pelo incomodo\n")
+            print("\nCard com nome incorreto: " + card_name + "\n\nO programa parou por uma das seguintes razoes:\n1. Voce nao soube escrever o nome da carta\n2. Esta carta nao esta disponivel em nenhuma loja da liga\n3. Eu programei algo errado, reporte o bug :)\n\nRetire ou altere o nome da carta, desculpe pelo incomodo\n")
             file.close
             sys.exit() 
             
@@ -125,6 +134,8 @@ def main(wanted_store_url):
             file.write("Carta indisponivel!")
             if(cartas_checadas != quantidade_cartas):
                 file.write("\n\n----------------\n\n")
+        
+        print(card_name)
 
     print("\nAs informacoes recuperadas da loja estao no arquivo card_prices.txt :)\n")
     file.close
