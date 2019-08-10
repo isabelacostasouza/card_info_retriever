@@ -94,7 +94,7 @@ def get_card_info(wanted_store_url, card_name):
 # Funcao principal
 def main(wanted_store_url):
 
-    print("\nO programa está rodando!\nAguarde alguns segundos ou minutos se voce passou uma lista enorme!\n")
+    print("\nO programa está rodando!\nAguarde alguns segundos, ou minutos se voce passou uma lista enorme!\n")
 
     list_cards = set()
     f = open("mtg_cards.txt", "r")
