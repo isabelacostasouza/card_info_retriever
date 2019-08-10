@@ -49,6 +49,9 @@ def get_card_info(wanted_store_url, card_name):
                 if(table_cards[i].find_all("td")[4].find("font") == None):
                     valor = str(table_cards[i].find_all("td")[4].contents[0])
                     if(valor[0] != 'R'):
+                      if(valor[0] == '-'):
+                        valor = str(table_cards[i].find_all("td")[3].contents[0])
+                      else:
                         valor = str(table_cards[i].find_all("td")[5].contents[0])
                 else:
                     valor = str(table_cards[i].find_all("td")[4].find("font").contents[0])
@@ -64,7 +67,6 @@ def get_card_info(wanted_store_url, card_name):
                         quantidade = str(quantidade.contents[0])
                     else:
                         quantidade = str(table_cards[i].find_all("td")[4].contents[0])
-
                 else:
                     tipo_especial = " (" + str(table_cards[i].find_all("td")[3].find("font").find("b").contents[0]) + ")"
                     quantidade = table_cards[i].find_all("td")[4]
@@ -76,13 +78,16 @@ def get_card_info(wanted_store_url, card_name):
 
                 informacoes_carta = valor + " - " + quantidade + tipo_especial
 
-                if(valor[0] != "0"):
+                if(valor[0] != "0" and informacoes_carta[0] != '\n'):
                     informacoes_encontradas.add(informacoes_carta)
                     
     return informacoes_encontradas
                 
 # Funcao principal
 def main(wanted_store_url):
+
+    print("\nO programa está rodando!\nAguarde alguns segundos ou minutos se voce passou uma lista enorme!\n")
+
     list_cards = set()
     f = open("mtg_cards.txt", "r")
     if f.mode == 'r':
@@ -102,7 +107,8 @@ def main(wanted_store_url):
         
         informacoes_encontradas = get_card_info(wanted_store_url, card_name)
         if(informacoes_encontradas == '0'):
-            file.write("Card com nome incorreto: " + card_name + "\n\nO programa parou porque voce nao sabe escrever")
+            file.write("Card com nome incorreto: " + card_name + "\nO programa parou porque voce nao sabe escrever ou porque esta carta nao esta disponivel em nenhuma loja da liga\n")
+            print("\nCard com nome incorreto: " + card_name + "\nO programa parou porque voce nao sabe escrever ou porque esta carta nao esta disponivel em nenhuma loja da liga\n")
             file.close
             sys.exit() 
             
