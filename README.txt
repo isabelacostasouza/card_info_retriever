@@ -2,10 +2,9 @@ Estes programas tem como função acelerar o processo de recuperação de dados 
 
 
 
-* ENTRE NO ARQUIVO tutorial_card_retriever.pdf PARA APRENDER A USAR O PROGRAMA DE EXTRAÇÃO DE CARTAS DE UMA LOJA*
+* PARA O USO MAIS FÁCIL DO PROGRAMA DE EXTRAÇÃO DE DADOS DE CARDS DE UMA LOJA, entre no link https://repl.it/@isabelacostasou/Cardretriever, coloque no arquivo 'mtg_cards.txt' as cartas desejadas e clique em 'RUN', seu resultado estará no arquivo 'card_prices.txt' *
 
-* ENTRE NO ARQUIVO tutorial_store_comparation.pdf PARA APRENDER A USAR O PROGRAMA DE COMPARACAO DE LOJAS*
-
+* PARA O USO MAIS FÁCIL DO PROGRAMA DE COMPARACAO DE PRECOS ENTRE LOJAS, entre no link https://repl.it/@isabelacostasou/Storecomparation, coloque no arquivo 'mtg_cards.txt' as cartas desejadas e clique em 'RUN', seu resultado estará no arquivo 'store_comparation.txt' *
 
 
 Sobre os programas:
