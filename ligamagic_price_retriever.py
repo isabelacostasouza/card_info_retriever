@@ -67,7 +67,7 @@ def get_card_info(wanted_store_url, card_name):
                 valor = ''
                 if(table_cards[i].find_all("td")[4].find("font") == None):
                     valor = str(table_cards[i].find_all("td")[4].contents[0])
-                    if(valor[0] != 'R'):
+                    if(valor[0] != 'R' and valor[1] != '$'):
                         if(valor[0] == '-'):
                             valor = str(table_cards[i].find_all("td")[3].contents[0])
                         elif(valor == '\n'):
@@ -77,7 +77,7 @@ def get_card_info(wanted_store_url, card_name):
                             valor = str(table_cards[i].find_all("td")[5].contents[0])
                 else:
                     valor = str(table_cards[i].find_all("td")[4].find("font").contents[0])
-                    if(valor[0] != 'R'):
+                    if(valor[0] != 'R' and valor[1] != '$'):
                         valor = str(table_cards[i].find_all("td")[5].contents[0])
                         if(valor == '\n'):
                           valor = str(table_cards[i].find_all("td"))
