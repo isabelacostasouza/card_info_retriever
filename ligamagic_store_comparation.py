@@ -67,7 +67,7 @@ def get_card_info(wanted_store_url, card_name):
                 valor = ''
                 if(table_cards[i].find_all("td")[4].find("font") == None):
                     valor = str(table_cards[i].find_all("td")[4].contents[0])
-                    if(valor[0] != 'R'):
+                    if(valor[0] != 'R' and valor[1] != '$'):
                         if(valor[0] == '-'):
                             valor = str(table_cards[i].find_all("td")[3].contents[0])
                         elif(valor == '\n'):
@@ -77,7 +77,7 @@ def get_card_info(wanted_store_url, card_name):
                             valor = str(table_cards[i].find_all("td")[5].contents[0])
                 else:
                     valor = str(table_cards[i].find_all("td")[4].find("font").contents[0])
-                    if(valor[0] != 'R'):
+                    if(valor[0] != 'R' and valor[1] != '$'):
                         valor = str(table_cards[i].find_all("td")[5].contents[0])
                         if(valor == '\n'):
                           valor = str(table_cards[i].find_all("td"))
@@ -153,10 +153,10 @@ def get_best_prices(list_cards, file_array):
 
       if(line != ''):
 
-          if(line[0] != 'R' and line != '----------------' and line != 'Carta indisponivel!'):
+          if(line[0] != 'R' and line[1] != '$'and line != '----------------' and line != 'Carta indisponivel!'):
               card = line
 
-          elif(line[0] == 'R'):
+          elif(line[0] == 'R' and line[1] == '$'):
               new_price = float(line.split("R$ ")[1].split(" -")[0].replace(",", "."))
               quantidade_disponivel = int(line.split("R$ ")[1].split(" - ")[1].split(' unid.')[0])
 
@@ -286,4 +286,4 @@ def main(wanted_store_url01, wanted_store_url02):
 
 wanted_store01_url = "https://www.tcgeek.com.br"
 wanted_store02_url = "https://www.vaultofcards.com.br"
-main(wanted_store01_url, wanted_store02_url)        
+main(wanted_store01_url, wanted_store02_url)
