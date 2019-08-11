@@ -1,6 +1,6 @@
 #Author: Isabela Costa Souza (isabela.costasouza10@gmail.com)
 #GitHub: https://github.com/isabelacostasouza/wikipedia_data_collector
-#Date: 08.10.2019 (MM/DD/YYYY)
+#Date: 11.10.2019 (MM/DD/YYYY)
 
 import sys
 import requests
