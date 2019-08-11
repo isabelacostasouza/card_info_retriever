@@ -34,6 +34,7 @@ def get_card_id(card_name):
 def get_card_info(wanted_store_url, card_name):
     try:
         store_url = wanted_store_url + get_card_id(card_name)
+
         page = requests.get(store_url)
         soup = BeautifulSoup(page.text, 'html.parser')
         table_cards = soup.find("table").find_all("tr")
@@ -43,9 +44,19 @@ def get_card_info(wanted_store_url, card_name):
     except:
         return '0'     
 
-    for i in range(len(table_cards) - 45):
-        if(i >= 11):
+    card_range = len(table_cards) - 1
+    range_cards = 0
 
+    for i in range(card_range):
+        if(i > 11 and str(table_cards[i].contents[1])[4] == 's'):
+            break
+        else:
+            range_cards += 1  
+
+    card_range = range_cards - 1
+
+    for i in range(card_range):
+        if(i >= 11):
             total_produtos = str(table_cards[i].find_all("td")[3].contents[0])
             if(total_produtos[0] == '<'):
                 total_produtos = table_cards[i].find_all("td")[4].contents[0]
@@ -59,12 +70,19 @@ def get_card_info(wanted_store_url, card_name):
                     if(valor[0] != 'R'):
                         if(valor[0] == '-'):
                             valor = str(table_cards[i].find_all("td")[3].contents[0])
+                        elif(valor == '\n'):
+                            valor = (table_cards[i])
+                            print(valor)
                         else:
                             valor = str(table_cards[i].find_all("td")[5].contents[0])
                 else:
                     valor = str(table_cards[i].find_all("td")[4].find("font").contents[0])
                     if(valor[0] != 'R'):
                         valor = str(table_cards[i].find_all("td")[5].contents[0])
+                        if(valor == '\n'):
+                          valor = str(table_cards[i].find_all("td"))
+                if(valor == '\n'):
+                    valor = table_cards[i].find_all("td")[5].find("s").contents[0]
 
                 #quantidade
                 quantidade = ''
@@ -86,15 +104,13 @@ def get_card_info(wanted_store_url, card_name):
 
                 informacoes_carta = valor + " - " + quantidade + tipo_especial
 
-                if(valor[0] != "0" and informacoes_carta[0] != '\n'):
+                if(valor[0] != "0"):
                     informacoes_encontradas.add(informacoes_carta)
                     
     return informacoes_encontradas
                 
 # Funcao principal
 def main(wanted_store_url):
-
-    print("\nO programa está rodando!\nAguarde alguns segundos, ou minutos se voce passou uma lista enorme!\n")
 
     list_cards = set()
     f = open("mtg_cards.txt", "r")
@@ -107,7 +123,9 @@ def main(wanted_store_url):
     quantidade_cartas = len(list_cards)
     cartas_checadas = 0
 
-    file = open("card_prices","w+")
+    aux_url = wanted_store_url.split("www.")[1]
+    file_name = "card_prices (" + aux_url + ")"
+    file = open(file_name,"w+")
   
     wanted_store_url += "/?view=ecom/item&tcg=1&card="
 
@@ -135,11 +153,14 @@ def main(wanted_store_url):
             file.write("Carta indisponivel!")
             if(cartas_checadas != quantidade_cartas):
                 file.write("\n\n----------------\n\n")
+        
         print(card_name)
 
     print("\nAs informacoes recuperadas da loja estao no arquivo card_prices.txt :)\n")
     file.close
-    
+
+print("\nO programa está rodando!\nAguarde alguns segundos ou minutos se voce passou uma lista enorme!\n")
+
 #link da loja desejada, nesse exemplo, TCGeek
 wanted_store_url = "https://www.tcgeek.com.br"
 main(wanted_store_url)
