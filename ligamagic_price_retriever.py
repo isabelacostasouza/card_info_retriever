@@ -7,6 +7,8 @@ import requests
 from bs4 import BeautifulSoup
 
 #Retorna o ID da ligamagic de uma carta
+
+#Retorna o ID da ligamagic de uma carta
 def get_card_id(card_name):
     ligamagic_url = 'https://www.ligamagic.com.br/?view=cards/card&card='
 
@@ -21,14 +23,18 @@ def get_card_id(card_name):
 
     store_link = soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace")
 
-    if(store_link == None):
-        store_link = requests.get("https://www.ligamagic.com.br/" + str(soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace e-col8-com-extras").find("div").find("a")["href"])).url
+    NoneType = type(None)
+
+    if isinstance(store_link, type(None)):
+
+        store_link = soup.find('div', class_='box p10 box-cards-esquerda').find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find_all('div', class_='estoque-linha')[1].find('a')['href']
+
+        store_link = requests.get("https://www.ligamagic.com.br/" + str(store_link)).url
         
     else:
       store_link = requests.get("https://www.ligamagic.com.br/" + str(soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace").find("a")["href"])).url
 
     return store_link.split("card=")[1].split("&")[0]
-
 
 # Retorna as informações da carta (valor, quantidade disponível e tipo) da loja desejada
 def get_card_info(wanted_store_url, card_name):
