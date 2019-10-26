@@ -21,8 +21,13 @@ def get_card_id(card_name):
 
     store_link = soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace")
 
-    if(store_link == None):
-        store_link = requests.get("https://www.ligamagic.com.br/" + str(soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace e-col8-com-extras").find("div").find("a")["href"])).url
+    NoneType = type(None)
+
+    if isinstance(store_link, type(None)):
+
+        store_link = soup.find('div', class_='box p10 box-cards-esquerda').find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find_all('div', class_='estoque-linha')[1].find('a')['href']
+
+        store_link = requests.get("https://www.ligamagic.com.br/" + str(store_link)).url
         
     else:
       store_link = requests.get("https://www.ligamagic.com.br/" + str(soup.find("div", class_="box p10 box-cards-esquerda").find("div", {"id": "card-estoque"}).find("div", {"id": "aba-cards"}).find("div", class_="estoque-linha primeiro").find("div", class_="e-col8 e-col8-offmktplace").find("a")["href"])).url
@@ -54,6 +59,8 @@ def get_card_info(wanted_store_url, card_name):
             range_cards += 1  
 
     card_range = range_cards - 1
+
+    print(card_name)
 
     for i in range(card_range):
         if(i >= 11):
