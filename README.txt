@@ -1,3 +1,5 @@
+(não funcionando desde a ultima atualização do site ligamagic.com)
+
 Estes programas tem como função acelerar o processo de recuperação de dados de cartas de sites ligados ao 'LigaMagic'.
 
 
